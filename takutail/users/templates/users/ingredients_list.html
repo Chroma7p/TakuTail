@@ -1,74 +1,41 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <title>Ingredients List</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        .owned {
-            background-color: #d4edda;
-        }
+{% block title %}Ingredients List{% endblock %}
 
-        .not-owned {
-            background-color: #f8d7da;
-        }
-    </style>
-</head>
+{% block content %}
+<h1>Ingredients List</h1>
+<h2>Sakes</h2>
+<ul>
+    {% for sake in user_sakes %}
+    <li class="ingredient {% if sake.owned %}owned{% else %}not-owned{% endif %}" data-type="sake"
+        data-id="{{ sake.sake.id }}">
+        {{ sake.sake.name }}
+    </li>
+    {% empty %}
+    <li>No Sakes available</li>
+    {% endfor %}
+</ul>
+<h2>Waris</h2>
+<ul>
+    {% for wari in user_waris %}
+    <li class="ingredient {% if wari.owned %}owned{% else %}not-owned{% endif %}" data-type="wari"
+        data-id="{{ wari.wari.id }}">
+        {{ wari.wari.name }}
+    </li>
+    {% empty %}
+    <li>No Waris available</li>
+    {% endfor %}
+</ul>
+<h2>Others</h2>
+<ul>
+    {% for other in user_others %}
+    <li class="ingredient {% if other.owned %}owned{% else %}not-owned{% endif %}" data-type="other"
+        data-id="{{ other.other.id }}">
+        {{ other.other.name }}
+    </li>
+    {% empty %}
+    <li>No Others available</li>
+    {% endfor %}
+</ul>
 
-<body>
-    <h1>Ingredients List</h1>
-    <h2>Sakes</h2>
-    <ul>
-        {% for sake in user_sakes %}
-        <li class="ingredient {% if sake.owned %}owned{% else %}not-owned{% endif %}" data-type="sake"
-            data-id="{{ sake.sake.id }}">
-            {{ sake.sake.name }}
-        </li>
-        {% empty %}
-        <li>No Sakes available</li>
-        {% endfor %}
-    </ul>
-    <h2>Waris</h2>
-    <ul>
-        {% for wari in user_waris %}
-        <li class="ingredient {% if wari.owned %}owned{% else %}not-owned{% endif %}" data-type="wari"
-            data-id="{{ wari.wari.id }}">
-            {{ wari.wari.name }}
-        </li>
-        {% empty %}
-        <li>No Waris available</li>
-        {% endfor %}
-    </ul>
-    <h2>Others</h2>
-    <ul>
-        {% for other in user_others %}
-        <li class="ingredient {% if other.owned %}owned{% else %}not-owned{% endif %}" data-type="other"
-            data-id="{{ other.other.id }}">
-            {{ other.other.name }}
-        </li>
-        {% empty %}
-        <li>No Others available</li>
-        {% endfor %}
-    </ul>
-    <script>
-        $(document).ready(function () {
-            $('.ingredient').click(function () {
-                var element = $(this);
-                var itemType = element.data('type');
-                var itemId = element.data('id');
-
-                $.ajax({
-                    url: '/users/toggle_ownership/' + itemType + '/' + itemId + '/',
-                    method: 'GET',
-                    success: function (response) {
-                        if (response.status == 'success') {
-                            element.toggleClass('owned not-owned');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-
-</html>
+{% endblock %}

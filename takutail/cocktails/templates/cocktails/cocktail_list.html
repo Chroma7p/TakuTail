@@ -1,19 +1,12 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <title>Cocktail List</title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-</head>
+{% block title %}Cocktails List{% endblock %}
 
-<body>
-    <h1>Cocktail List</h1>
-    <div class="cocktail-list">
-        {% for cocktail in cocktails %}
-        {% include 'cocktails/partials/cocktail_card.html' with cocktail=cocktail %}
-        {% endfor %}
-    </div>
-</body>
-
-</html>
+{% block content %}
+<h1>Cocktail List</h1>
+<div class="cocktail-list">
+    {% for cocktail in cocktails %}
+    {% include 'cocktails/partials/cocktail_card.html' with cocktail=cocktail %}
+    {% endfor %}
+</div>
+{% endblock %}

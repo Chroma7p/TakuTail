@@ -1,46 +1,31 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
 
-<head>
-    <title>Possible Cocktails</title>
-    <style>
-        .cocktail-card {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 16px;
-            margin: 16px;
-            display: inline-block;
-            width: 200px;
-        }
-    </style>
-</head>
+{% block title %}Possible Cocktails{% endblock %}
 
-<body>
-    <h1>Possible Cocktails</h1>
-    <div>
-        {% for cocktail in possible_cocktails %}
-        {% include 'cocktails/partials/cocktail_card.html' with cocktail=cocktail %}
+{% block content %}
+<h1>Possible Cocktails</h1>
+<div>
+    {% for cocktail in possible_cocktails %}
+    {% include 'cocktails/partials/cocktail_card.html' with cocktail=cocktail %}
+    {% endfor %}
+</div>
+<h1>Almost Possible Cocktails</h1>
+<div>
+    {% for item in almost_possible_cocktails %}
+    {% include 'cocktails/partials/cocktail_card.html' with cocktail=item.cocktail %}
+    <p><strong>Missing Ingredient:</strong> {{ item.missing_ingredient }}</p>
+    {% endfor %}
+</div>
+<h1>Cocktails with Alternatives</h1>
+<div>
+    {% for item in cocktails_with_alternatives %}
+    {% include 'cocktails/partials/cocktail_card.html' with cocktail=item.cocktail %}
+    <p><strong>Missing Ingredients:</strong></p>
+    <ul>
+        {% for missing, alternative in item.missing_ingredients %}
+        <li>{{ missing }} -> {{ alternative }}</li>
         {% endfor %}
-    </div>
-    <h1>Almost Possible Cocktails</h1>
-    <div>
-        {% for item in almost_possible_cocktails %}
-        {% include 'cocktails/partials/cocktail_card.html' with cocktail=item.cocktail %}
-        <p><strong>Missing Ingredient:</strong> {{ item.missing_ingredient }}</p>
-        {% endfor %}
-    </div>
-    <h1>Cocktails with Alternatives</h1>
-    <div>
-        {% for item in cocktails_with_alternatives %}
-        {% include 'cocktails/partials/cocktail_card.html' with cocktail=item.cocktail %}
-        <p><strong>Missing Ingredients:</strong></p>
-        <ul>
-            {% for missing, alternative in item.missing_ingredients %}
-            <li>{{ missing }} -> {{ alternative }}</li>
-            {% endfor %}
-        </ul>
-        {% endfor %}
-    </div>
-</body>
-
-</html>
+    </ul>
+    {% endfor %}
+</div>
+{% endblock %}
