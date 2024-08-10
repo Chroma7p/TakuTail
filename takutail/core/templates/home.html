@@ -1,27 +1,21 @@
-{% load static %}
-<!doctype html>
-<html lang="ja">
+{% extends "base.html" %}
 
-<head>
-    <link rel="stylesheet" href="style.css">
-    <title>{% block title %}{% endblock %}</title>
-</head>
+{% block title %}HOME{% endblock %}
 
-<body>
+{% block content %}
+<nav>
     <nav>
-        <nav>
-            {% if user.is_authenticated %}
-            <p>Welcome, {{ user.username }}!</p>
-            <form action='{% url "logout" %}' method='post' name='logout'>
-                {% csrf_token %}
-                <a href="javascript:logout.submit()">Logout</a>
-            </form>
-            {% else %}
-            <a href="{% url 'login' %}">Login</a>
-            {% endif %}
-        </nav>
+        {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}!</p>
+        <form action='{% url "logout" %}' method='post' name='logout'>
+            {% csrf_token %}
+            <a href="javascript:logout.submit()">Logout</a>
+        </form>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        {% endif %}
     </nav>
+</nav>
 
-    {% block content %}
-    {% endblock %}
-</body>
+
+{% endblock %}
