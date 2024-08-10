@@ -17,6 +17,12 @@ from users.models import CustomUser
 #         form = SignUpForm()
 #     return render(request, "signup.html", {"form": form})
 
+def root_view(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        return redirect('login')
+
 
 class SignUpView(CreateView):
     model = CustomUser
