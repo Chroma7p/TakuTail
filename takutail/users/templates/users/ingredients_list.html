@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Ingredients List{% endblock %}
+
+{% block content %}
+<h1>Ingredients List</h1>
+<h2>Sakes</h2>
+<ul>
+    {% for sake in user_sakes %}
+    <li class="ingredient {% if sake.owned %}owned{% else %}not-owned{% endif %}" data-type="sake"
+        data-id="{{ sake.sake.id }}">
+        {{ sake.sake.name }}
+    </li>
+    {% empty %}
+    <li>No Sakes available</li>
+    {% endfor %}
+</ul>
+<h2>Waris</h2>
+<ul>
+    {% for wari in user_waris %}
+    <li class="ingredient {% if wari.owned %}owned{% else %}not-owned{% endif %}" data-type="wari"
+        data-id="{{ wari.wari.id }}">
+        {{ wari.wari.name }}
+    </li>
+    {% empty %}
+    <li>No Waris available</li>
+    {% endfor %}
+</ul>
+<h2>Others</h2>
+<ul>
+    {% for other in user_others %}
+    <li class="ingredient {% if other.owned %}owned{% else %}not-owned{% endif %}" data-type="other"
+        data-id="{{ other.other.id }}">
+        {{ other.other.name }}
+    </li>
+    {% empty %}
+    <li>No Others available</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

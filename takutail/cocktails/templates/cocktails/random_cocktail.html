@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Random Cocktail{% endblock %}
+
+{% block content %}
+<h1>Random Cocktail</h1>
+<p><strong>Name:</strong> {{ cocktail_name }}</p>
+<h2>Ingredients:</h2>
+<ul>
+    {% for ingredient in ingredients %}
+    <li>{{ ingredient.item.name }} - {{ ingredient.amount }}</li>
+    {% endfor %}
+</ul>
+<button id="regenerate-button">Regenerate Cocktail</button>
+
+<script>
+    document.getElementById('regenerate-button').addEventListener('click', function () {
+        location.reload();
+    });
+</script>
+{% endblock %}

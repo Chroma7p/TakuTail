@@ -30,6 +30,7 @@ class Command(BaseCommand):
                     bitterness=row['bitterness'],
                     sourness=row['sourness'],
                     alcohol_content=row['alcohol_content'],
+                    
                 )
         self.stdout.write(self.style.SUCCESS('Successfully imported sake data'))
 
@@ -44,6 +45,7 @@ class Command(BaseCommand):
                     sweetness=row['sweetness'],
                     bitterness=row['bitterness'],
                     sourness=row['sourness'],
+                    exclude=row['exclude'] == '除外',
                 )
         self.stdout.write(self.style.SUCCESS('Successfully imported wari data'))
 
@@ -53,7 +55,7 @@ class Command(BaseCommand):
             for row in reader:
                 Other.objects.create(
                     name=row['name'],
-                    note=row['note'],
+                    exclude=row['exclude'] == '除外',
                 )
         self.stdout.write(self.style.SUCCESS('Successfully imported other data'))
 

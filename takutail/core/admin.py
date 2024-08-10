@@ -11,4 +11,4 @@ class WariAdmin(admin.ModelAdmin):
 
 @admin.register(Other)
 class OtherAdmin(admin.ModelAdmin):
-    list_display = ('name', 'note')
+    list_display = ('name', 'exclude')

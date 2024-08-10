@@ -3,7 +3,7 @@
 <html lang="ja">
 
 <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <title>{% block title %}{% endblock %}</title>
 </head>
 
@@ -11,7 +11,16 @@
     <nav>
         {% if user.is_authenticated %}
         <p>Welcome, {{ user.username }}!</p>
-        <a href="{% url 'logout' %}">Logout</a>
+
+        <a href="{% url 'cocktails_list' %}">Cocktails List</a>
+        <a href="{% url 'ingredients_list' %}">Ingredients List</a>
+        <a href="{% url 'list_possible_cocktails' %}">Possible Cocktails</a>
+        <a href="{% url 'random_cocktail' %}">Generate Random Cocktail</a>
+
+        <form action='{% url "logout" %}' method='post' name='logout'>
+            {% csrf_token %}
+            <a href="javascript:logout.submit()">Logout</a>
+        </form>
         {% else %}
         <a href="{% url 'login' %}">Login</a>
         {% endif %}
@@ -19,6 +28,26 @@
 
     {% block content %}
     {% endblock %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.ingredient').click(function () {
+                var element = $(this);
+                var itemType = element.data('type');
+                var itemId = element.data('id');
+
+                $.ajax({
+                    url: '/users/toggle_ownership/' + itemType + '/' + itemId + '/',
+                    method: 'GET',
+                    success: function (response) {
+                        if (response.status == 'success') {
+                            element.toggleClass('owned not-owned');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

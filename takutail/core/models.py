@@ -19,13 +19,14 @@ class Wari(models.Model):
     sweetness = models.FloatField()
     bitterness = models.FloatField()
     sourness = models.FloatField()
+    exclude= models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
 
 class Other(models.Model):
     name = models.CharField(max_length=100)
-    note = models.TextField(blank=True, null=True)
+    exclude= models.BooleanField(default=False) 
 
     def __str__(self):
         return self.name
