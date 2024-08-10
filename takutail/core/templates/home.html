@@ -9,12 +9,17 @@
 
 <body>
     <nav>
-        {% if user.is_authenticated %}
-        <p>Welcome, {{ user.username }}!</p>
-        <a href="{% url 'logout' %}">Logout</a>
-        {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        {% endif %}
+        <nav>
+            {% if user.is_authenticated %}
+            <p>Welcome, {{ user.username }}!</p>
+            <form action='{% url "logout" %}' method='post' name='logout'>
+                {% csrf_token %}
+                <a href="javascript:logout.submit()">Logout</a>
+            </form>
+            {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </nav>
     </nav>
 
     {% block content %}
