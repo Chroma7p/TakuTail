@@ -99,8 +99,6 @@ class CocktailObject:
         return final_name
 
 
-
-@api_view(['GET'])
 def create_random_cocktail(request):
     # ベースの酒を1か2ランダムに選択
     base_count = random.randint(1, 2)
@@ -123,29 +121,10 @@ def create_random_cocktail(request):
     random_cocktail_object = CocktailObject("ランダムカクテル", ingredients)
     random_cocktail_name = random_cocktail_object.generate_name(CocktailName.objects.all())
 
-    # データベースに保存
-    random_cocktail = Cocktail(
-        name=random_cocktail_object.name,
-        generated_name=random_cocktail_name,
-        base=ingredients[0].item.name if len(ingredients) > 0 else None,
-        base_amount=ingredients[0].amount if len(ingredients) > 0 else None,
-        ingredient1=ingredients[1].item.name if len(ingredients) > 1 else None,
-        amount1=ingredients[1].amount if len(ingredients) > 1 else None,
-        ingredient2=ingredients[2].item.name if len(ingredients) > 2 else None,
-        amount2=ingredients[2].amount if len(ingredients) > 2 else None,
-        ingredient3=ingredients[3].item.name if len(ingredients) > 3 else None,
-        amount3=ingredients[3].amount if len(ingredients) > 3 else None,
-        ingredient4=ingredients[4].item.name if len(ingredients) > 4 else None,
-        amount4=ingredients[4].amount if len(ingredients) > 4 else None,
-        ingredient5=ingredients[5].item.name if len(ingredients) > 5 else None,
-        amount5=ingredients[5].amount if len(ingredients) > 5 else None
-    )
-    random_cocktail.save()
-
-
-    # 結果の表示
-    serializer = CocktailSerializer(random_cocktail)
-    return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return render(request, 'cocktails/random_cocktail.html', {
+        'cocktail_name': random_cocktail_name,
+        'ingredients': ingredients,
+    })
 
 
 

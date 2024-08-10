@@ -15,7 +15,7 @@
         <a href="{% url 'cocktails_list' %}">Cocktails List</a>
         <a href="{% url 'ingredients_list' %}">Ingredients List</a>
         <a href="{% url 'list_possible_cocktails' %}">Possible Cocktails</a>
-
+        <a href="{% url 'random_cocktail' %}">Generate Random Cocktail</a>
 
         <form action='{% url "logout" %}' method='post' name='logout'>
             {% csrf_token %}
