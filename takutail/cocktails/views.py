@@ -100,17 +100,15 @@ class CocktailObject:
 
 
 def create_random_cocktail(request):
-    # ベースの酒を1か2ランダムに選択
     base_count = random.randint(1, 2)
     sakes = random.sample(list(Sake.objects.all()), base_count)
 
-    # 割り材を1から3ランダムに選択
     wari_count = random.randint(1, 3)
-    waris = random.sample(list(Wari.objects.all()), wari_count)
-
-    # その他の材料を0から1つ選択
+    waris = random.sample(list(Wari.objects.filter(exclude=False)), wari_count)
+    print(list(Wari.objects.filter(exclude=False)))
     other_count = random.randint(0, 1)
-    others = random.sample(list(Other.objects.all()), other_count)
+    others = random.sample(list(Other.objects.filter(exclude=False)), other_count)
+    print(list(Other.objects.filter(exclude=False)))
     
     # 選択された材料をまとめる
     ingredients = [Ingredient(sake, '適量') for sake in sakes] + \
