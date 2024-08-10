@@ -6,6 +6,8 @@ from .models import Cocktail, CocktailName, CocktailIngredient
 from core.models import Sake, Wari, Other
 from .serializers import CocktailSerializer
 from users.models import UserSake, UserWari, UserOther
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 import random
 
 
@@ -17,6 +19,21 @@ class Ingredient:
 class CocktailViewSet(viewsets.ModelViewSet):
     queryset = Cocktail.objects.all()
     serializer_class = CocktailSerializer
+    
+    
+class PossibleCocktailViewSet(viewsets.ViewSet):
+    template_name = 'cocktails/possible_cocktails.html'
+    queryset = Cocktail.objects.all()
+    serializer_class = CocktailSerializer
+
+
+def cocktail_detail(request, pk):
+    cocktail = get_object_or_404(Cocktail, pk=pk)
+    return render(request, 'cocktails/cocktail_detail.html', {'cocktail': cocktail})
+def cocktail_list(request):
+    cocktails = Cocktail.objects.all()
+    return render(request, 'cocktails/cocktail_list.html', {'cocktails': cocktails})
+
 
 class CocktailObject:
     def __init__(self, name, ingredients):
@@ -81,6 +98,8 @@ class CocktailObject:
         final_name = ' '.join(combined_names)
         return final_name
 
+
+
 @api_view(['GET'])
 def create_random_cocktail(request):
     # ベースの酒を1か2ランダムに選択
@@ -128,80 +147,7 @@ def create_random_cocktail(request):
     serializer = CocktailSerializer(random_cocktail)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-@api_view(['GET'])
-def list_possible_cocktails(request):
-    user = request.user
 
-    user_sakes = UserSake.objects.filter(user=user)
-    user_waris = UserWari.objects.filter(user=user)
-    user_others = UserOther.objects.filter(user=user)
-
-    user_sake_names = [user_sake.sake.name for user_sake in user_sakes]
-    user_wari_names = [user_wari.wari.name for user_wari in user_waris]
-    user_other_names = [user_other.other.name for user_other in user_others]
-
-    possible_cocktails = []
-
-    for cocktail in Cocktail.objects.all():
-        ingredients = [
-            cocktail.base,
-            cocktail.ingredient1,
-            cocktail.ingredient2,
-            cocktail.ingredient3,
-            cocktail.ingredient4,
-            cocktail.ingredient5,
-        ]
-
-        if all(ingredient in user_sake_names + user_wari_names + user_other_names for ingredient in ingredients if ingredient):
-            possible_cocktails.append(cocktail)
-
-    serializer = CocktailSerializer(possible_cocktails, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def list_almost_possible_cocktails(request):
-    user = request.user
-
-    user_sakes = UserSake.objects.filter(user=user)
-    user_waris = UserWari.objects.filter(user=user)
-    user_others = UserOther.objects.filter(user=user)
-
-    user_sake_names = [user_sake.sake.name for user_sake in user_sakes]
-    user_wari_names = [user_wari.wari.name for user_wari in user_waris]
-    user_other_names = [user_other.other.name for user_other in user_others]
-
-    user_ingredients = set(user_sake_names + user_wari_names + user_other_names)
-
-    almost_possible_cocktails = []
-
-    for cocktail in Cocktail.objects.all():
-        ingredients = [
-            cocktail.base,
-            cocktail.ingredient1,
-            cocktail.ingredient2,
-            cocktail.ingredient3,
-            cocktail.ingredient4,
-            cocktail.ingredient5,
-        ]
-        ingredients = [ingredient for ingredient in ingredients if ingredient]  # 空の材料を取り除く
-
-        missing_ingredients = [ingredient for ingredient in ingredients if ingredient not in user_ingredients]
-
-        if len(missing_ingredients) == 1:
-            almost_possible_cocktails.append({
-                'cocktail': cocktail,
-                'missing_ingredient': missing_ingredients[0]
-            })
-
-    result = [
-        {
-            'cocktail': CocktailSerializer(cocktail['cocktail']).data,
-            'missing_ingredient': cocktail['missing_ingredient']
-        }
-        for cocktail in almost_possible_cocktails
-    ]
-
-    return Response(result)
 
 
 ALTERNATIVE_INGREDIENTS = {
@@ -226,30 +172,58 @@ ALTERNATIVE_INGREDIENTS = {
     'サイダー': ['炭酸水'],
 }
 
-def get_possible_ingredients(user_ingredients):
-    possible_ingredients = set(user_ingredients)
-    for ingredient in user_ingredients:
-        if ingredient in ALTERNATIVE_INGREDIENTS:
-            possible_ingredients.update(ALTERNATIVE_INGREDIENTS[ingredient])
-    return possible_ingredients
-
-@api_view(['GET'])
-def list_cocktails_with_alternatives(request):
-    user = request.user
-
+def get_user_ingredients(user):
     user_sakes = UserSake.objects.filter(user=user)
     user_waris = UserWari.objects.filter(user=user)
     user_others = UserOther.objects.filter(user=user)
 
-    user_sake_names = [user_sake.sake.name for user_sake in user_sakes]
-    user_wari_names = [user_wari.wari.name for user_wari in user_waris]
-    user_other_names = [user_other.other.name for user_other in user_others]
+    user_sake_names = [user_sake.sake.name for user_sake in user_sakes if user_sake.owned]
+    user_wari_names = [user_wari.wari.name for user_wari in user_waris if user_wari.owned]
+    user_other_names = [user_other.other.name for user_other in user_others if user_other.owned]
 
-    user_ingredients = set(user_sake_names + user_wari_names + user_other_names)
-    possible_ingredients = get_possible_ingredients(user_ingredients)
+    return set(user_sake_names + user_wari_names + user_other_names)
 
+def get_possible_cocktails(user_ingredients):
     possible_cocktails = []
+    for cocktail in Cocktail.objects.all():
+        ingredients = [
+            cocktail.base,
+            cocktail.ingredient1,
+            cocktail.ingredient2,
+            cocktail.ingredient3,
+            cocktail.ingredient4,
+            cocktail.ingredient5,
+        ]
+        ingredients = [ingredient for ingredient in ingredients if ingredient]  # 空の材料を取り除く
 
+        if all(ingredient in user_ingredients for ingredient in ingredients):
+            possible_cocktails.append(cocktail)
+    return possible_cocktails
+
+def get_almost_possible_cocktails(user_ingredients):
+    almost_possible_cocktails = []
+    for cocktail in Cocktail.objects.all():
+        ingredients = [
+            cocktail.base,
+            cocktail.ingredient1,
+            cocktail.ingredient2,
+            cocktail.ingredient3,
+            cocktail.ingredient4,
+            cocktail.ingredient5,
+        ]
+        ingredients = [ingredient for ingredient in ingredients if ingredient]  # 空の材料を取り除く
+
+        missing_ingredients = [ingredient for ingredient in ingredients if ingredient not in user_ingredients]
+
+        if len(missing_ingredients) == 1:
+            almost_possible_cocktails.append({
+                'cocktail': cocktail,
+                'missing_ingredient': missing_ingredients[0]
+            })
+    return almost_possible_cocktails
+
+def get_possible_cocktails_with_alternatives(user_ingredients):
+    possible_cocktails_with_alternatives = []
     for cocktail in Cocktail.objects.all():
         ingredients = [
             cocktail.base,
@@ -264,10 +238,6 @@ def list_cocktails_with_alternatives(request):
         missing_ingredients = [ingredient for ingredient in ingredients if ingredient not in user_ingredients]
         alternative_used = {}
 
-        # そのまま作れるカクテルは除外
-        if len(missing_ingredients) == 0:
-            continue
-
         if len(missing_ingredients) > 0:
             for missing in missing_ingredients:
                 if missing in ALTERNATIVE_INGREDIENTS:
@@ -279,17 +249,39 @@ def list_cocktails_with_alternatives(request):
         final_ingredients = set(ingredients) - set(missing_ingredients) | set(alternative_used.values())
 
         if len(ingredients) == len(final_ingredients):
-            possible_cocktails.append({
+            possible_cocktails_with_alternatives.append({
                 'cocktail': cocktail,
                 'missing_ingredients': list(alternative_used.items())
             })
+    return possible_cocktails_with_alternatives
 
-    result = [
+@login_required
+def list_cocktails(request):
+    user = request.user
+    user_ingredients = get_user_ingredients(user)
+
+    possible_cocktails = get_possible_cocktails(user_ingredients)
+    almost_possible_cocktails = get_almost_possible_cocktails(user_ingredients)
+    possible_cocktails_with_alternatives = get_possible_cocktails_with_alternatives(user_ingredients)
+
+    almost_possible_cocktails_result = [
+        {
+            'cocktail': CocktailSerializer(cocktail['cocktail']).data,
+            'missing_ingredient': cocktail['missing_ingredient']
+        }
+        for cocktail in almost_possible_cocktails
+    ]
+
+    cocktails_with_alternatives_result = [
         {
             'cocktail': CocktailSerializer(cocktail['cocktail']).data,
             'missing_ingredients': cocktail['missing_ingredients']
         }
-        for cocktail in possible_cocktails
+        for cocktail in possible_cocktails_with_alternatives
     ]
 
-    return Response(result)
+    return render(request, 'cocktails/possible_cocktails.html', {
+        'possible_cocktails': CocktailSerializer(possible_cocktails, many=True).data,
+        'almost_possible_cocktails': almost_possible_cocktails_result,
+        'cocktails_with_alternatives': cocktails_with_alternatives_result,
+    })
