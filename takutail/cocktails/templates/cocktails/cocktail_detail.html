@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ cocktail.name }}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="cocktail-detail">
+        <h1>{{ cocktail.name }}</h1>
+        <p><strong>Generated Name:</strong> {{ cocktail.generated_name }}</p>
+        <p><strong>Base:</strong> {{ cocktail.base }} ({{ cocktail.base_amount }})</p>
+        <ul>
+            {% if cocktail.ingredient1 %}
+            <li><strong>Ingredient 1:</strong> {{ cocktail.ingredient1 }} ({{ cocktail.amount1 }})</li>
+            {% endif %}
+            {% if cocktail.ingredient2 %}
+            <li><strong>Ingredient 2:</strong> {{ cocktail.ingredient2 }} ({{ cocktail.amount2 }})</li>
+            {% endif %}
+            {% if cocktail.ingredient3 %}
+            <li><strong>Ingredient 3:</strong> {{ cocktail.ingredient3 }} ({{ cocktail.amount3 }})</li>
+            {% endif %}
+            {% if cocktail.ingredient4 %}
+            <li><strong>Ingredient 4:</strong> {{ cocktail.ingredient4 }} ({{ cocktail.amount4 }})</li>
+            {% endif %}
+            {% if cocktail.ingredient5 %}
+            <li><strong>Ingredient 5:</strong> {{ cocktail.ingredient5 }} ({{ cocktail.amount5 }})</li>
+            {% endif %}
+        </ul>
+        <p><strong>Note:</strong> {{ cocktail.note }}</p>
+        <p><a href="{% url 'cocktail_list' %}">Back to list</a></p>
+    </div>
+</body>
+
+</html>
