@@ -1,14 +1,15 @@
 from django.contrib import admin
 from .models import UserSake, UserWari, UserOther
 
-@admin.register(UserSake)
+from django.contrib import admin
+from .models import UserSake, UserWari, UserOther
+
 class UserSakeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'sake', 'quantity')
+    list_display = ('user', 'sake', 'owned')
 
-@admin.register(UserWari)
 class UserWariAdmin(admin.ModelAdmin):
-    list_display = ('user', 'wari', 'quantity')
+    list_display = ('user', 'wari', 'owned')
 
-@admin.register(UserOther)
 class UserOtherAdmin(admin.ModelAdmin):
-    list_display = ('user', 'other', 'quantity')
+    list_display = ('user', 'other', 'owned')
+
