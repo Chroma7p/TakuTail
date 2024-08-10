@@ -10,21 +10,29 @@
 <body>
     <nav>
         {% if user.is_authenticated %}
-        <p>Welcome, {{ user.username }}!</p>
-
-        <a href="{% url 'cocktails_list' %}">Cocktails List</a>
-        <a href="{% url 'ingredients_list' %}">Ingredients List</a>
-        <a href="{% url 'list_possible_cocktails' %}">Possible Cocktails</a>
-        <a href="{% url 'random_cocktail' %}">Generate Random Cocktail</a>
-
-        <form action='{% url "logout" %}' method='post' name='logout'>
-            {% csrf_token %}
-            <a href="javascript:logout.submit()">Logout</a>
-        </form>
+        <div class="navbar">
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">宅テル</a></li>
+                <li><a href="{% url 'cocktails_list' %}">カクテル一覧</a></li>
+                <li><a href="{% url 'ingredients_list' %}">材料一覧</a></li>
+                <li><a href="{% url 'list_possible_cocktails' %}">カクテル提案</a></li>
+                <li><a href="{% url 'random_cocktail' %}">カクテルガチャ</a></li>
+            </ul>
+            <div class="user-section">
+                <span style="color: #f9f9f9;">{{ user.username }}</span>
+                <form action='{% url "logout" %}' method='post' name='logout' class="logout-form">
+                    {% csrf_token %}
+                    <a href="javascript:logout.submit()" class="logout-link">Logout</a>
+                </form>
+            </div>
+        </div>
         {% else %}
-        <a href="{% url 'login' %}">Login</a>
+        <div class="navbar">
+            <a href="{% url 'login' %}" class="login-link">Login</a>
+        </div>
         {% endif %}
     </nav>
+
 
     {% block content %}
     {% endblock %}
