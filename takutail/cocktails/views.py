@@ -237,6 +237,7 @@ def get_possible_cocktails_with_alternatives(user_ingredients):
 
         missing_ingredients = [ingredient for ingredient in ingredients if ingredient not in user_ingredients]
         alternative_used = {}
+        alternatives_needed = False
 
         if len(missing_ingredients) > 0:
             for missing in missing_ingredients:
@@ -244,15 +245,17 @@ def get_possible_cocktails_with_alternatives(user_ingredients):
                     for alternative in ALTERNATIVE_INGREDIENTS[missing]:
                         if alternative in user_ingredients:
                             alternative_used[missing] = alternative
+                            alternatives_needed = True
                             break
 
-        final_ingredients = set(ingredients) - set(missing_ingredients) | set(alternative_used.values())
-
-        if len(ingredients) == len(final_ingredients):
-            possible_cocktails_with_alternatives.append({
-                'cocktail': cocktail,
-                'missing_ingredients': list(alternative_used.items())
-            })
+        # alternatives_needed が True の場合のみリストに追加
+        if alternatives_needed:
+            final_ingredients = set(ingredients) - set(missing_ingredients) | set(alternative_used.values())
+            if len(ingredients) == len(final_ingredients):
+                possible_cocktails_with_alternatives.append({
+                    'cocktail': cocktail,
+                    'missing_ingredients': list(alternative_used.items())
+                })
     return possible_cocktails_with_alternatives
 
 @login_required
