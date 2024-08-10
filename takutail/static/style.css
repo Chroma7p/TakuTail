@@ -39,3 +39,11 @@ body {
     border: 1px solid #ddd;
     border-radius: 3px;
 }
+
+.owned {
+    background-color: #d4edda;
+}
+
+.not-owned {
+    background-color: #f8d7da;
+}
