@@ -1,0 +1,22 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    <nav>
+        {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}!</p>
+        <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+</body>
