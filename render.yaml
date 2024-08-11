@@ -1,27 +1,16 @@
 services:
   - type: web
-    name: takutail
+    name: my-django-app
     env: python
     plan: free
-    buildCommand: build.sh
-    startCommand: python manage.py runserver
+    buildCommand: "cd myproject && poetry install"
+    startCommand: "cd myproject && poetry run python manage.py migrate && poetry run python manage.py runserver 0.0.0.0:8000"
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: takutail.settings
+        value: myproject.settings
       - key: SECRET_KEY
         sync: false
       - key: DATABASE_URL
         fromDatabase:
-          name: my-django-db
+          name: my-database-name
           property: connectionString
-
-databases:
-  - name: my-django-db
-    plan: free
-    engine: mysql
-    version: 8.0
-    defaultDatabaseName: mydatabase
-    user: myuser
-    password: mypassword
-    ipAllowList:
-      - source: 0.0.0.0/0
