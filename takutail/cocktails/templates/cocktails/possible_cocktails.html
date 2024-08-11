@@ -4,20 +4,23 @@
 
 {% block content %}
 <h1>今作れるカクテル</h1>
-<div>
+<div class="cocktail-list">
     {% for cocktail in possible_cocktails %}
     {% include 'cocktails/partials/cocktail_card.html' with cocktail=cocktail %}
     {% endfor %}
 </div>
 <h1>あと１つで作れるカクテル</h1>
-<div>
+<div class="cocktail-list">
     {% for item in almost_possible_cocktails %}
-    {% include 'cocktails/partials/cocktail_card.html' with cocktail=item.cocktail %}
-    <p><strong>不足:</strong> {{ item.missing_ingredient }}</p>
+    <div>
+        {% include 'cocktails/partials/cocktail_card.html' with cocktail=item.cocktail %}
+        <p><strong>不足:</strong> {{ item.missing_ingredient }}</p>
+    </div>
+
     {% endfor %}
 </div>
 <h1>代用で作れるカクテル</h1>
-<div>
+<div class="cocktail-list">
     {% for item in cocktails_with_alternatives %}
     {% include 'cocktails/partials/cocktail_card.html' with cocktail=item.cocktail %}
     <p><strong>Missing Ingredients:</strong></p>
