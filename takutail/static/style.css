@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
+    margin: 5px 20px;
     padding: 0;
     background-color: #f4f4f4;
 }
@@ -41,9 +41,61 @@ body {
 }
 
 .owned {
-    background-color: #d4edda;
+    border: 2px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: #6bb5ff;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 1.0rem;
+    cursor: pointer;
 }
 
 .not-owned {
-    background-color: #f8d7da;
+    border: 2px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: white;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 1.0rem;
+    cursor: pointer;
+}
+
+.str {
+    display: inline-block;
+    /* ブロック化              */
+    font-weight: bold;
+    /* 太字                    */
+    font-size: 150%;
+    /* 文字を大きくする        */
+    border-bottom: 2px solid #0059b3;
+    /* 下線                    */
+    color: #ff0000;
+    /* 文字色                  */
+}
+
+.ingredients-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    justify-content: flex-start;
+}
+
+.ingredients-card {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    gap: 5px;
+    padding: 20px;
+    width: 200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
