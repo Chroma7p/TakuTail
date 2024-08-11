@@ -30,11 +30,12 @@
             {% endif %}
         </ul>
         {% if cocktail.note %}
+        <p><strong>備考:</strong> {{ cocktail.note }}</p>
         {% endif %}
         {% if cocktail.recipe %}
-        <p><strong>Recipe:</strong> {{ cocktail.recipe }}</p>
+        <p><strong>レシピ:</strong> {{ cocktail.recipe }}</p>
         {% endif %}
-        <p><a href="{% url 'cocktails_list' %}">Back to list</a></p>
+        <p><a href="{% url 'cocktails_list' %}">一覧に戻る</a></p>
     </div>
 </body>
 
