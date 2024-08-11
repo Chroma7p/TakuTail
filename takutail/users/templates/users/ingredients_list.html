@@ -6,105 +6,46 @@
 
 
 
-<div class="container mt-4">
-    <h1>材料一覧</h1>
-    <div class="accordion" id="checkboxAccordion">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                    aria-expanded="true" aria-controls="collapseOne">
-                    酒
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                data-bs-parent="#checkboxAccordion">
-                <div class="accordion-body">
-                    {% for sake in user_sakes %}
-                    <div class="form-check">
-                        <a class="ingredient {% if sake.owned %}owned{% else %}not-owned{% endif %}" data-type="sake"
-                            data-id="{{ sake.sake.id }}">
-                            　
-                        </a>
-                        <label class="form-check-label">
-                            {{ sake.sake.name }}
-                        </label>
-                    </div>
-                    {% empty %}
-                    <li>No Sakes available</li>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-
-
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Options Group 2
-                </button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                data-bs-parent="#checkboxAccordion">
-                <div class="accordion-body">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="option4">
-                        <label class="form-check-label" for="option4">
-                            Option 4
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="option5">
-                        <label class="form-check-label" for="option5">
-                            Option 5
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="option6">
-                        <label class="form-check-label" for="option6">
-                            Option 6
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-
-
+<h1>材料一覧</h1>
 <h2>お酒</h2>
-<ul>
+<div class="ingredients-list">
     {% for sake in user_sakes %}
-    <li class="ingredient {% if sake.owned %}owned{% else %}not-owned{% endif %}" data-type="sake"
-        data-id="{{ sake.sake.id }}">
-        {{ sake.sake.name }}
-    </li>
+    <div class="ingredients-card">
+        <a class="ingredient {% if sake.owned %}owned{% else %}not-owned{% endif %}" data-type="sake"
+            data-id="{{ sake.sake.id }}">
+        </a>
+        <a> {{ sake.sake.name }}</a>
+    </div>
     {% empty %}
     <li>No Sakes available</li>
     {% endfor %}
-</ul>
+</div>
 <h2>割り材</h2>
-<ul>
+<div class="ingredients-list">
     {% for wari in user_waris %}
-    <li class="ingredient {% if wari.owned %}owned{% else %}not-owned{% endif %}" data-type="wari"
-        data-id="{{ wari.wari.id }}">
-        {{ wari.wari.name }}
-    </li>
+    <div class="ingredients-card">
+        <a class="ingredient {% if wari.owned %}owned{% else %}not-owned{% endif %}" data-type="wari"
+            data-id="{{ wari.wari.id }}">
+        </a>
+        <a> {{ wari.wari.name }}</a>
+    </div>
     {% empty %}
-    <li>No Waris available</li>
+    <li>No waris available</li>
     {% endfor %}
-</ul>
+</div>
+
 <h2>副材料</h2>
-<ul>
+<div class="ingredients-list">
     {% for other in user_others %}
-    <li class="ingredient {% if other.owned %}owned{% else %}not-owned{% endif %}" data-type="other"
-        data-id="{{ other.other.id }}">
-        {{ other.other.name }}
-    </li>
+    <div class="ingredients-card">
+        <a class="ingredient {% if other.owned %}owned{% else %}not-owned{% endif %}" data-type="other"
+            data-id="{{ other.other.id }}">
+        </a>
+        <a> {{ other.other.name }}</a>
+    </div>
     {% empty %}
-    <li>No Others available</li>
+    <li>No others available</li>
     {% endfor %}
-</ul>
+</div>
 
 {% endblock %}

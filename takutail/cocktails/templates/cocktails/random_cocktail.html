@@ -3,15 +3,18 @@
 {% block title %}Random Cocktail{% endblock %}
 
 {% block content %}
-<h1>闇鍋カクテルガチャ</h1>
-<p><strong>カクテル名:</strong> {{ cocktail_name }}</p>
+<h1>ランダムカクテル</h1>
+<div>
+    <span>未知なるカクテルを作りましょう！</span>
+</div>
+<div><strong>カクテル名:</strong><span class="str">{{ cocktail_name }}</span></div>
 <h2>材料:</h2>
 <ul>
     {% for ingredient in ingredients %}
     <li>{{ ingredient.item.name }} - {{ ingredient.amount }}</li>
     {% endfor %}
 </ul>
-<button id="regenerate-button">もう一度回す</button>
+<button id="regenerate-button">もう一回</button>
 
 <script>
     document.getElementById('regenerate-button').addEventListener('click', function () {

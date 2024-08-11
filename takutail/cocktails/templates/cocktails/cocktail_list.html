@@ -4,6 +4,7 @@
 
 {% block content %}
 <h1>カクテルレシピ一覧</h1>
+<span>特殊な器具は要りません。基本は材料をグラスに注いで混ぜるだけ！</span>
 <div class="cocktail-list">
     {% for cocktail in cocktails %}
     {% include 'cocktails/partials/cocktail_card.html' with cocktail=cocktail %}
