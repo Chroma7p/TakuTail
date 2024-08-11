@@ -3,13 +3,7 @@ services:
     name: takutail
     env: python
     plan: free
-    buildCommand: |
-      poetry install
-      cd takutail
-      python manage.py collectstatic --noinput
-      python manage.py migrate
-      python manage.py load_csv
-      python manage.py runserver
+    buildCommand: build.sh
     startCommand: gunicorn myproject.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
