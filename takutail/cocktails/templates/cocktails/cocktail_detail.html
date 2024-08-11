@@ -29,6 +29,8 @@
             <li><strong>材料 5:</strong> {{ cocktail.ingredient5 }} ({{ cocktail.amount5 }})</li>
             {% endif %}
         </ul>
+        <p><strong>Alcohol Percentage:</strong> {{ cocktail.alcohol_content|floatformat:0}}%</p>
+
         {% if cocktail.note %}
         <p><strong>備考:</strong> {{ cocktail.note }}</p>
         {% endif %}

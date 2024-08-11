@@ -30,6 +30,7 @@ class Command(BaseCommand):
                     bitterness=row['bitterness'],
                     sourness=row['sourness'],
                     alcohol_content=row['alcohol_content'],
+                    amount=row['amount'],
                     
                 )
         self.stdout.write(self.style.SUCCESS('Successfully imported sake data'))
@@ -46,6 +47,7 @@ class Command(BaseCommand):
                     bitterness=row['bitterness'],
                     sourness=row['sourness'],
                     exclude=row['exclude'] == '除外',
+                    amount=row['amount'],
                 )
         self.stdout.write(self.style.SUCCESS('Successfully imported wari data'))
 
