@@ -3,7 +3,7 @@
 {% block title %}Cocktails List{% endblock %}
 
 {% block content %}
-<h1>Cocktail List</h1>
+<h1>カクテルレシピ一覧</h1>
 <div class="cocktail-list">
     {% for cocktail in cocktails %}
     {% include 'cocktails/partials/cocktail_card.html' with cocktail=cocktail %}

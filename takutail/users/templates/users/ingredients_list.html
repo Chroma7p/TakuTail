@@ -3,8 +3,8 @@
 {% block title %}Ingredients List{% endblock %}
 
 {% block content %}
-<h1>Ingredients List</h1>
-<h2>Sakes</h2>
+<h1>材料一覧</h1>
+<h2>お酒</h2>
 <ul>
     {% for sake in user_sakes %}
     <li class="ingredient {% if sake.owned %}owned{% else %}not-owned{% endif %}" data-type="sake"
@@ -15,7 +15,7 @@
     <li>No Sakes available</li>
     {% endfor %}
 </ul>
-<h2>Waris</h2>
+<h2>割り材</h2>
 <ul>
     {% for wari in user_waris %}
     <li class="ingredient {% if wari.owned %}owned{% else %}not-owned{% endif %}" data-type="wari"
@@ -26,7 +26,7 @@
     <li>No Waris available</li>
     {% endfor %}
 </ul>
-<h2>Others</h2>
+<h2>副材料</h2>
 <ul>
     {% for other in user_others %}
     <li class="ingredient {% if other.owned %}owned{% else %}not-owned{% endif %}" data-type="other"

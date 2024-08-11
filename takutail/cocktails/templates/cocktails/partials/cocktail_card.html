@@ -2,7 +2,7 @@
     <h3>{{ cocktail.name }}</h3>
     <p>{{ cocktail.generated_name }}</p>
     <p>Base: {{ cocktail.base }} ({{ cocktail.base_amount }})</p>
-    <p>Ingredients:</p>
+    <p>材料:</p>
     <ul>
         {% if cocktail.ingredient1 %}
         <li>{{ cocktail.ingredient1 }} ({{ cocktail.amount1 }})</li>
@@ -20,5 +20,5 @@
         <li>{{ cocktail.ingredient5 }} ({{ cocktail.amount5 }})</li>
         {% endif %}
     </ul>
-    <p><a href="{% url 'cocktail_detail' cocktail.id %}">View Details</a></p>
+    <p><a href="{% url 'cocktail_detail' cocktail.id %}">レシピ詳細</a></p>
 </div>
