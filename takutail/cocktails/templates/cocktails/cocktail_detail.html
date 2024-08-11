@@ -29,7 +29,12 @@
             <li><strong>Ingredient 5:</strong> {{ cocktail.ingredient5 }} ({{ cocktail.amount5 }})</li>
             {% endif %}
         </ul>
+        {% if cocktail.note %}
         <p><strong>Note:</strong> {{ cocktail.note }}</p>
+        {% endif %}
+        {% if cocktail.recipe %}
+        <p><strong>Recipe:</strong> {{ cocktail.recipe }}</p>
+        {% endif %}
         <p><a href="{% url 'cocktails_list' %}">Back to list</a></p>
     </div>
 </body>
