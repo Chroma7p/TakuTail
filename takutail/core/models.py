@@ -8,6 +8,7 @@ class Sake(models.Model):
     bitterness = models.FloatField()
     sourness = models.FloatField()
     alcohol_content = models.CharField(max_length=10)
+    amount= models.CharField(max_length=10)
 
     def __str__(self):
         return self.name
@@ -20,6 +21,7 @@ class Wari(models.Model):
     bitterness = models.FloatField()
     sourness = models.FloatField()
     exclude= models.BooleanField(default=False)
+    amount= models.CharField(max_length=10)
 
     def __str__(self):
         return self.name

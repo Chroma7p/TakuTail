@@ -11,6 +11,7 @@
     <li>{{ ingredient.item.name }} - {{ ingredient.amount }}</li>
     {% endfor %}
 </ul>
+<p><strong>アルコール度数:{{percentage|floatformat:0}}</strong>度 </p>
 <button id="regenerate-button">Regenerate Cocktail</button>
 
 <script>

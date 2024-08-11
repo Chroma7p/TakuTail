@@ -44,6 +44,7 @@ class CocktailObject:
         for ingredient in ingredients:
             if ingredient.item is None:
                 raise ValueError(f"Missing ingredient for cocktail {name}")
+        self.alcohol_percentage = calculate_alcohol_percentage(ingredients)
 
     def display_ingredients_tree(self):
         tree = f'カクテル: {self.name}\n'
@@ -93,6 +94,8 @@ class CocktailObject:
             else:
                 combined_names.insert(random.randint(1, len(combined_names) - 1), s)
 
+        # combined namesからトッピングの名前を取り除く
+        combined_names = [name for name in combined_names if name not in Other.objects.filter(exclude=False).values_list('name', flat=True)]
 
         # Generate the final name
         final_name = ' '.join(combined_names)
@@ -111,8 +114,8 @@ def create_random_cocktail(request):
     print(list(Other.objects.filter(exclude=False)))
     
     # 選択された材料をまとめる
-    ingredients = [Ingredient(sake, '適量') for sake in sakes] + \
-                  [Ingredient(wari, '適量') for wari in waris] + \
+    ingredients = [Ingredient(sake, sake.amount if sake.amount else "適量") for sake in sakes] + \
+                  [Ingredient(wari, wari.amount if wari.amount else "適量") for wari in waris] + \
                   [Ingredient(other, '適量') for other in others]
 
     # ランダムカクテルの作成
@@ -122,9 +125,34 @@ def create_random_cocktail(request):
     return render(request, 'cocktails/random_cocktail.html', {
         'cocktail_name': random_cocktail_name,
         'ingredients': ingredients,
+        'percentage': calculate_alcohol_percentage(ingredients)
     })
 
+def calculate_alcohol_percentage(ingredients):
+    total_volume = 0
+    total_alcohol = 0
 
+    for ingredient in ingredients:
+        if ingredient.amount == '適量':
+            continue    # 適量の場合はアルコール度数を計算しない
+        volume = float(ingredient.amount.replace('ml', ''))
+        total_volume += volume
+        if isinstance(ingredient.item, Sake):
+            amount = ingredient.item.alcohol_content
+            try :
+                alcohol_percentage = float(ingredient.item.alcohol_content.replace('%', ''))
+            except ValueError:
+                alcohol_percentage = 0
+            total_alcohol += volume * (alcohol_percentage / 100)
+
+        elif isinstance(ingredient.item, Wari):
+            total_alcohol += volume * 0  # Wariのアルコール度数がない場合は0
+        elif isinstance(ingredient.item, Other):
+            total_alcohol += volume * 0  # Otherのアルコール度数がない場合は0
+
+    if total_volume == 0:
+        return 0
+    return (total_alcohol / total_volume) * 100
 
 
 ALTERNATIVE_INGREDIENTS = {
