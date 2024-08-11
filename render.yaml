@@ -7,7 +7,7 @@ services:
     startCommand: python manage.py runserver
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: myproject.settings
+        value: takutail.settings
       - key: SECRET_KEY
         sync: false
       - key: DATABASE_URL
@@ -18,5 +18,10 @@ services:
 databases:
   - name: my-django-db
     plan: free
+    engine: mysql
+    version: 8.0
+    defaultDatabaseName: mydatabase
+    user: myuser
+    password: mypassword
     ipAllowList:
       - source: 0.0.0.0/0
