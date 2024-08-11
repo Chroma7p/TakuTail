@@ -3,11 +3,11 @@ services:
     name: my-django-app
     env: python
     plan: free
-    buildCommand: 
-      - poetry install
-      - python manage.py collectstatic --noinput
-      - python manage.py migrate
-      - python manage.py load_csv
+    buildCommand: |
+      poetry install
+      python manage.py collectstatic --noinput
+      python manage.py migrate
+      python manage.py load_csv
     startCommand: gunicorn myproject.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
@@ -22,8 +22,5 @@ services:
 databases:
   - name: my-django-db
     plan: free
-    engine: postgres
-    version: 13
-    defaultDatabaseName: mydatabase
-    user: myuser
-    password: mypassword
+    ipAllowList:
+      - 0.0.0.0/0
