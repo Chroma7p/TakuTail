@@ -29,8 +29,12 @@
             <li><strong>材料 5:</strong> {{ cocktail.ingredient5 }} ({{ cocktail.amount5 }})</li>
             {% endif %}
         </ul>
-        <p><strong>Note:</strong> {{ cocktail.note }}</p>
-        <p><a href="{% url 'cocktails_list' %}">レシピ一覧に戻る</a></p>
+        {% if cocktail.note %}
+        {% endif %}
+        {% if cocktail.recipe %}
+        <p><strong>Recipe:</strong> {{ cocktail.recipe }}</p>
+        {% endif %}
+        <p><a href="{% url 'cocktails_list' %}">Back to list</a></p>
     </div>
 </body>
 
