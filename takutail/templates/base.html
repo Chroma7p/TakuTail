@@ -51,46 +51,6 @@
             </div>
         </div>
     </nav>
-
-
-    <nav class="navbar navbar-expand-sm navbar-light bg-light">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="Navber">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">ホーム</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cocktails_list' %}">カクテル一覧</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'ingredients_list' %}">材料一覧</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'list_possible_cocktails' %}">カクテル提案</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'random_cocktail' %}">ランダムカクテル</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <a>{{ user.username }}</a>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">ログアウト</a>
-                    </li>
-                </ul>
-
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">ログイン</a>
-                </li>
-                {% endif %}
-
-                </ul>
-            </div><!-- /.navbar-collapse -->
-    </nav>
-
     {% block content %}
     {% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
