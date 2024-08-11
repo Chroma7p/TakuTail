@@ -79,6 +79,7 @@ class Command(BaseCommand):
                     ingredient5=row.get('ingredient5', ''),
                     amount5=row.get('amount5', ''),
                     note=row.get('note', ''),
+                    recipe=row.get('recipe', ''),
                 )
         self.stdout.write(self.style.SUCCESS('Successfully imported cocktail data'))
 
